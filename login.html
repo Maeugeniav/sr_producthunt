@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Ingreso</title>
+</head>
+
+<body class="bg-cover bg-center min-h-screen flex items-center justify-center"
+      style="background-image: url('{{ url_for('static', filename='imagen.png') }}');">
+       <div class="absolute top-6 w-full text-center">
+        <p class="text-black text-lg font-semibold">
+            Modelo utilizado: {{ modelo_activo }}
+        </p>
+        <p class="text-black text-sm">
+            Última actualización: {{ fecha_actualizacion }}
+        </p>
+    </div>
+    <form method="post" action="/"
+      class="w-96 bg-white/90 backdrop-blur-md border border-gray-200 shadow-2xl rounded-xl p-6">
+        <h1 class="text-2xl font-bold text-center mb-2 text-gray-800">Sistema de Recomendación de Apps
+        </h1>
+        <p class="text-center text-gray-600 mb-6">Descubre aplicaciones personalizadas según tus intereses</p>
+
+        <h2 class="mb-4 text-xl font-bold">Quiero ingresar!
+        </h2>
+        <div class="flex mb-4">
+            <label>
+                Usuario:
+                <input type="text" name="username" minlength="5" maxlength="30" required class="p-1 border rounded" />
+            </label>
+        </div>
+
+        <!--
+        <div class="flex mb-4">
+            <label>
+                Nombre: <input type="text" name="nombre" minlength="3" maxlength="30" required class="p-1 border rounded">
+            </label>
+        </div>
+        <div class="flex mb-4">
+            <label>
+                Género:
+                <select name="genero" class="p-1 border rounded">
+                    <option value="" selected></option>
+                    <option value="Hombre">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                </select>
+            </label>
+        </div>
+        <div class="flex mb-4">
+            <label>
+                Vive en: <input type="text" name="vive_en" minlength="3" maxlength="30" class="p-1 border rounded">
+            </label>
+        </div>
+        <div class="flex mb-4">
+            <label>
+                Año de nacimiento: <input type="text" name="nacimiento" pattern="[0-9]{4}" maxlength="4" class="p-1 border rounded">
+            </label>
+        </div> -->
+
+        <div class="flex justify-end">
+            <button type="submit"
+  class="relative w-full border-2 border-teal-500 text-teal-600 font-bold py-2 rounded-lg
+         overflow-hidden group transition-all duration-300 hover:text-white">
+  <span class="absolute inset-0 bg-teal-500 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+  <span class="relative z-10">Entrar</span>
+</button>
+        </div>
+    </form>
+      
+</body>
+
+</html>

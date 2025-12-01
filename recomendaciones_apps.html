@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+
+  <title>Recomendaciones de {{ producto.name }} para {{ username }}</title>
+</head>
+
+<body class="px-6 py-4 bg-gray-50">
+  <!-- Encabezado -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-lg font-bold">
+      Recomendaciones para {{ username }} mirando {{ producto.name }}
+    </h1>
+    <div>
+      <small class="text-gray-600">
+        {{ cant_vistos }} vistos, {{ cant_valorados }} valorados —
+        <a href="/reset"
+          class="bg-teal-500 hover:bg-teal-600 text-white font-semibold text-xs px-2 py-1 rounded cursor-pointer">Reset</a>
+      </small>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <form method="post" action="/recomendaciones" class="flex flex-col w-full space-y-4">
+
+    <!-- Producto principal -->
+    <div class="flex justify-center">
+      <div class="card card-side bg-white shadow-md border rounded-lg overflow-hidden">
+        <img src="{{ producto.image or 'https://via.placeholder.com/300' }}" alt="{{ producto.name }}"
+          class="w-full max-w-64 h-auto object-cover" />
+        <div class="card-body">
+          <h2 class="card-title font-semibold link">
+            {% if producto.url %}
+            <a href="{{ producto.url }}" target="_blank" class="text-teal-600 hover:underline">{{ producto.name }}</a>
+            {% else %}
+            {{ producto.name }}
+            {% endif %}
+          </h2>
+
+          {% if producto.tagline %}
+          <span class="text-sm text-gray-600">{{ producto.tagline }}</span>
+          {% endif %}
+
+          <div class="text-xs text-gray-500 mt-2">
+            {% if producto.rating %}
+            ⭐ {{ producto.rating }}
+            {% endif %}
+            {% if producto.followers %}
+            — 👥 {{ producto.followers }} seguidores
+            {% endif %}
+          </div>
+
+          <div class="card-actions justify-end items-center mt-auto">
+            <div class="flex items-center space-x-2">
+              <label for="rating_{{ producto.slug }}" class="text-sm">Mi puntuación:</label>
+              <select name="rating_{{ producto.slug }}"
+                class="px-4 py-1 text-sm border rounded focus:ring-2 focus:ring-teal-400">
+                <option value="0" selected></option>
+                {% for n in range(1, 11) %}
+                <option value="{{ n }}">{{ n }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos relacionados -->
+    <div>
+      <h1 class="text-lg font-bold my-4">
+        Quienes vieron {{ producto.name }} también vieron...
+      </h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for prod in productos_recomendados %}
+        <div class="card bg-white shadow-sm border rounded-lg overflow-hidden hover:shadow-lg transition">
+          <img src="{{ prod.image or 'https://via.placeholder.com/150' }}" alt="{{ prod.name }}"
+            class="w-full h-40 object-cover" />
+
+          <div class="card-body p-4">
+            <h2 class="card-title font-semibold link text-lg">
+              {% if prod.url %}
+              <a href="{{ prod.url }}" target="_blank" class="text-teal-600 hover:underline">{{ prod.name }}</a>
+              {% else %}
+              {{ prod.name }}
+              {% endif %}
+            </h2>
+
+            {% if prod.tagline %}
+            <p class="text-sm text-gray-600 mb-2">{{ prod.tagline|truncate(200) }}</p>
+            {% endif %}
+
+            <div class="text-xs text-gray-500">
+              {% if prod.rating %}
+              ⭐ {{ prod.rating }}
+              {% endif %}
+              {% if prod.followers %}
+              — 👥 {{ prod.followers }} seguidores
+              {% endif %}
+            </div>
+
+            <div class="card-actions justify-end mt-3">
+              <div class="flex items-center space-x-2">
+                <label for="rating_{{ prod.slug }}" class="text-sm">Puntuación:</label>
+                <select name="rating_{{ prod.slug }}"
+                  class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400">
+                  <option value="0" selected></option>
+                  {% for n in range(1, 11) %}
+                  <option value="{{ n }}">{{ n }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-6">
+      <input type="submit"
+        class="bg-teal-500 hover:bg-teal-600 text-white font-semibold px-4 py-2 rounded cursor-pointer"
+        value="Actualizar opiniones">
+    </div>
+  </form>
+</body>
+
+</html>
